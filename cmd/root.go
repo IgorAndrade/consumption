@@ -17,8 +17,14 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	addCmd.Flags().StringP("author", "a", "YOUR NAME", "author name for copyright attribution")
+	addCmd.Flags().Int64P("km", "k", 0, "kilometers traveled")
+	addCmd.Flags().Float64P("liters", "l", 1, "liters consumed")
+	addCmd.Flags().StringP("station", "s", "n/a", "liters consumed")
+	addCmd.Flags().StringP("route", "r", "n/a", "liters consumed")
+
+	rootCmd.PersistentFlags().StringP("file", "f", "db.txt", "store all records")
 	rootCmd.AddCommand(addCmd)
+	rootCmd.AddCommand(listCmd)
 }
 
 func Execute() {

@@ -5,34 +5,26 @@ import (
 	"time"
 
 	"github.com/IgorAndrade/consumo_combustivel/api/store"
-	"github.com/IgorAndrade/consumo_combustivel/internal/model"
 	"github.com/IgorAndrade/consumo_combustivel/internal/service"
 	"github.com/spf13/cobra"
 )
 
-var addCmd = &cobra.Command{
-	Use:     "add",
-	Short:   "insert new record",
-	Example: "add x y",
-	Long:    `insert km record`,
+var listCmd = &cobra.Command{
+	Use:     "list",
+	Short:   "list all records",
+	Example: "list",
+	Long:    `list all records`,
 	Run: func(cmd *cobra.Command, args []string) {
 		start := time.Now()
 		f, _ := cmd.Root().PersistentFlags().GetString("file")
-		k, _ := cmd.Flags().GetInt64("km")
-		l, _ := cmd.Flags().GetFloat64("liters")
-		s, _ := cmd.Flags().GetString("station")
-		r, _ := cmd.Flags().GetString("route")
 
 		store := store.NewFilestore(f)
 		defer store.Close()
-
 		serv := service.NewConsumption(store)
-		serv.Insert(model.Fuel_Consumption{
-			Km:      k,
-			Liters:  l,
-			Station: s,
-			Route:   r,
-		})
+		list := serv.ReadAll()
+		for i, v := range list {
+			fmt.Println(i+1, "->", v)
+		}
 		fmt.Println("duration", time.Since(start).Milliseconds(), "ms")
 	},
 }

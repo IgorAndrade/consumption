@@ -25,6 +25,6 @@ var listCmd = &cobra.Command{
 		for i, v := range list {
 			fmt.Println(i+1, "->", v)
 		}
-		fmt.Println("duration", time.Since(start).Milliseconds(), "ms")
+		fmt.Println("duration", time.Since(start))
 	},
 }

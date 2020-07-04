@@ -33,6 +33,6 @@ var addCmd = &cobra.Command{
 			Station: s,
 			Route:   r,
 		})
-		fmt.Println("duration", time.Since(start).Milliseconds(), "ms")
+		fmt.Println("duration", time.Since(start))
 	},
 }

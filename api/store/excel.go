@@ -1,6 +1,7 @@
 package store
 
 import (
+	"io"
 	"log"
 	"os"
 
@@ -9,7 +10,7 @@ import (
 )
 
 type Excel struct {
-	file  *os.File
+	file  io.ReadCloser
 	start int
 }
 

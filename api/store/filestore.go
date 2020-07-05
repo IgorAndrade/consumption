@@ -3,6 +3,7 @@ package store
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strconv"
@@ -12,7 +13,7 @@ import (
 )
 
 type Filestore struct {
-	file *os.File
+	file io.ReadWriteCloser
 }
 
 func NewFilestore(name string) *Filestore {
@@ -39,10 +40,6 @@ func (f Filestore) Insert(fc model.Fuel_Consumption) error {
 		fc.Station,
 		fc.Route)
 	if err != nil {
-		return err
-	}
-	// Save file changes.
-	if err = f.file.Sync(); err != nil {
 		return err
 	}
 	fmt.Println("File Updated Successfully.", fc)

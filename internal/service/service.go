@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/IgorAndrade/consumo_combustivel/internal/model"
 	"github.com/IgorAndrade/consumo_combustivel/internal/repository"
 )
@@ -14,6 +16,10 @@ func NewConsumption(repo repository.Repository) Consumption {
 }
 
 func (c Consumption) Insert(fc model.Fuel_Consumption) error {
+	list := c.repo.ReadAll()
+	first := list[:1]
+	last := list[len(list)-1:]
+	fmt.Println(first, last)
 	return c.repo.Insert(fc)
 }
 

@@ -9,15 +9,16 @@ import (
 )
 
 type Excel struct {
-	file *os.File
+	file  *os.File
+	start int
 }
 
-func NewExcel(name string) *Excel {
+func NewExcel(name string, start int) *Excel {
 	file, err := os.OpenFile(name, os.O_RDONLY, 0644)
 	if os.IsNotExist(err) {
 		log.Fatalln(err)
 	}
-	return &Excel{file: file}
+	return &Excel{file: file, start: start}
 }
 
 func (e Excel) ReadAll() []model.Fuel_Consumption {
@@ -26,14 +27,17 @@ func (e Excel) ReadAll() []model.Fuel_Consumption {
 		log.Fatalln(err)
 	}
 
-	sheet := excel.GetSheetName(0)
-	for _, row := range excel.GetRows(sheet) {
+	sheet := excel.GetSheetName(1)
+	records := make([]model.Fuel_Consumption, 0)
+	for _, row := range excel.GetRows(sheet)[e.start:] {
+		record := make([]string, 0)
 		for _, colCell := range row {
-			print(colCell, "\t")
+			record = append(record, colCell)
 		}
-		println()
+		model := convertListToModel(record)
+		records = append(records, model)
 	}
-	return nil
+	return records
 }
 
 func (f Excel) Close() error {

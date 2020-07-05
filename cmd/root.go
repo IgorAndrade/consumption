@@ -23,6 +23,7 @@ func init() {
 	addCmd.Flags().StringP("route", "r", "n/a", "liters consumed")
 
 	importCmd.Flags().StringP("excel", "e", "excel.xlsx", "excel name")
+	importCmd.Flags().IntP("line", "l", 2, "first data line")
 
 	rootCmd.PersistentFlags().StringP("file", "f", "db.txt", "store all records")
 	rootCmd.AddCommand(addCmd)

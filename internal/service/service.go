@@ -20,6 +20,15 @@ func (c Consumption) Insert(fc model.Fuel_Consumption) error {
 	return c.writer.Insert(fc)
 }
 
+func (c Consumption) Import() error {
+	for _, r := range c.reader.ReadAll() {
+		if err := c.writer.Insert(r); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func calculate(recived model.Fuel_Consumption, list []model.Fuel_Consumption) model.Fuel_Consumption {
 	if len(list) == 0 {
 		return recived

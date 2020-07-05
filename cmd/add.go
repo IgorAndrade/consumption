@@ -13,7 +13,7 @@ import (
 var addCmd = &cobra.Command{
 	Use:     "add",
 	Short:   "insert new record",
-	Example: "add x y",
+	Example: "add -k 100 -l 14 ",
 	Long:    `insert km record`,
 	Run: func(cmd *cobra.Command, args []string) {
 		start := time.Now()

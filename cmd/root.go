@@ -25,6 +25,7 @@ func init() {
 	rootCmd.PersistentFlags().StringP("file", "f", "db.txt", "store all records")
 	rootCmd.AddCommand(addCmd)
 	rootCmd.AddCommand(listCmd)
+	rootCmd.AddCommand(cleanCmd)
 }
 
 func Execute() {

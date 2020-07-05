@@ -15,7 +15,12 @@ type Fuel_Consumption struct {
 }
 
 func (fc Fuel_Consumption) String() string {
-	return fmt.Sprintf("Km: %v, Km (Interval): %v",
+	return fmt.Sprintf("Km: %v, Km (Interval): %v, Liters: %v, Liters (Total): %v, AVG %v, AVG (Total): %v",
 		fc.Km,
-		fc.KmInterval)
+		fc.KmInterval,
+		fc.Liters,
+		fc.LitersTotal,
+		fc.Avg,
+		fc.AvgTotal,
+	)
 }

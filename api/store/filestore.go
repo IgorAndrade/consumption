@@ -15,7 +15,7 @@ type Filestore struct {
 	file *os.File
 }
 
-func NewFilestore(name string) Filestore {
+func NewFilestore(name string) *Filestore {
 	var file *os.File
 	file, err := os.OpenFile(name, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)
 	if os.IsNotExist(err) {
@@ -24,7 +24,7 @@ func NewFilestore(name string) Filestore {
 			log.Fatalln(err)
 		}
 	}
-	return Filestore{file: file}
+	return &Filestore{file: file}
 }
 
 func (f Filestore) Insert(fc model.Fuel_Consumption) error {

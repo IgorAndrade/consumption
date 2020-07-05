@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/IgorAndrade/consumo_combustivel/internal/model"
 	"github.com/IgorAndrade/consumo_combustivel/internal/repository"
 )
@@ -17,10 +15,32 @@ func NewConsumption(repo repository.Repository) Consumption {
 
 func (c Consumption) Insert(fc model.Fuel_Consumption) error {
 	list := c.repo.ReadAll()
-	first := list[:1]
-	last := list[len(list)-1:]
-	fmt.Println(first, last)
+	fc = calculate(fc, list)
 	return c.repo.Insert(fc)
+}
+
+func calculate(recived model.Fuel_Consumption, list []model.Fuel_Consumption) model.Fuel_Consumption {
+	if len(list) == 0 {
+		return recived
+	}
+
+	first := list[0]
+	last := list[len(list)-1]
+
+	recived.KmInterval = recived.Km - last.Km
+	recived.KmStart = recived.Km - first.Km
+	recived.LitersTotal = totalLiters(append(list, recived))
+	recived.Avg = float64(recived.KmInterval) / recived.Liters
+	recived.AvgTotal = float64(recived.KmStart) / recived.LitersTotal
+
+	return recived
+}
+
+func totalLiters(list []model.Fuel_Consumption) (total float64) {
+	for _, l := range list {
+		total += l.Liters
+	}
+	return
 }
 
 func (c Consumption) ReadAll() []model.Fuel_Consumption {

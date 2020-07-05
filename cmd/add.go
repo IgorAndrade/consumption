@@ -26,7 +26,7 @@ var addCmd = &cobra.Command{
 		store := store.NewFilestore(f)
 		defer store.Close()
 
-		serv := service.NewConsumption(store)
+		serv := service.NewConsumption(store, store)
 		serv.Insert(model.Fuel_Consumption{
 			Km:      k,
 			Liters:  l,

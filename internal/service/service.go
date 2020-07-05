@@ -6,17 +6,18 @@ import (
 )
 
 type Consumption struct {
-	repo repository.Repository
+	reader repository.Reader
+	writer repository.Writer
 }
 
-func NewConsumption(repo repository.Repository) Consumption {
-	return Consumption{repo: repo}
+func NewConsumption(reader repository.Reader, writer repository.Writer) Consumption {
+	return Consumption{reader: reader, writer: writer}
 }
 
 func (c Consumption) Insert(fc model.Fuel_Consumption) error {
-	list := c.repo.ReadAll()
+	list := c.reader.ReadAll()
 	fc = calculate(fc, list)
-	return c.repo.Insert(fc)
+	return c.writer.Insert(fc)
 }
 
 func calculate(recived model.Fuel_Consumption, list []model.Fuel_Consumption) model.Fuel_Consumption {
@@ -44,5 +45,5 @@ func totalLiters(list []model.Fuel_Consumption) (total float64) {
 }
 
 func (c Consumption) ReadAll() []model.Fuel_Consumption {
-	return c.repo.ReadAll()
+	return c.reader.ReadAll()
 }

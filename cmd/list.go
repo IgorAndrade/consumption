@@ -20,7 +20,7 @@ var listCmd = &cobra.Command{
 
 		store := store.NewFilestore(f)
 		defer store.Close()
-		serv := service.NewConsumption(store)
+		serv := service.NewConsumption(store, store)
 		list := serv.ReadAll()
 		for i, v := range list {
 			fmt.Println(i+1, "->", v)

@@ -3,6 +3,7 @@ module github.com/IgorAndrade/consumo_combustivel
 go 1.13
 
 require (
+	github.com/360EntSecGroup-Skylar/excelize v1.4.1
 	github.com/99designs/gqlgen v0.11.3
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
 	github.com/mitchellh/mapstructure v1.3.2 // indirect

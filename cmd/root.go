@@ -22,10 +22,13 @@ func init() {
 	addCmd.Flags().StringP("station", "s", "n/a", "liters consumed")
 	addCmd.Flags().StringP("route", "r", "n/a", "liters consumed")
 
+	importCmd.Flags().StringP("excel", "e", "excel.xlsx", "excel name")
+
 	rootCmd.PersistentFlags().StringP("file", "f", "db.txt", "store all records")
 	rootCmd.AddCommand(addCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(cleanCmd)
+	rootCmd.AddCommand(importCmd)
 }
 
 func Execute() {

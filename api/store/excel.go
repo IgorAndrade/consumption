@@ -22,23 +22,21 @@ func NewExcel(name string, start int) *Excel {
 	return &Excel{file: file, start: start}
 }
 
-func (e Excel) ReadAll() []model.Fuel_Consumption {
+func (e Excel) ReadAll(c chan model.Fuel_Consumption) {
 	excel, err := excelize.OpenReader(e.file)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
 	sheet := excel.GetSheetName(1)
-	records := make([]model.Fuel_Consumption, 0)
 	for _, row := range excel.GetRows(sheet)[e.start:] {
 		record := make([]string, 0)
 		for _, colCell := range row {
 			record = append(record, colCell)
 		}
-		model := convertListToModel(record)
-		records = append(records, model)
+		c <- convertListToModel(record)
 	}
-	return records
+	close(c)
 }
 
 func (f Excel) Close() error {

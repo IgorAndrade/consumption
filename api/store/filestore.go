@@ -46,19 +46,19 @@ func (f Filestore) Insert(fc model.Fuel_Consumption) error {
 	return nil
 }
 
-func (f Filestore) ReadAll() []model.Fuel_Consumption {
-	list := make([]model.Fuel_Consumption, 0)
+func (f Filestore) ReadAll(c chan model.Fuel_Consumption) {
 
 	scanner := bufio.NewScanner(f.file)
 	for scanner.Scan() {
 		spl := strings.Split(scanner.Text(), ";")
-		list = append(list, convertListToModel(spl))
+		c <- convertListToModel(spl)
 	}
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-	return list
+	close(c)
+
 }
 
 func convertListToModel(s []string) model.Fuel_Consumption {

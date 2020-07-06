@@ -7,5 +7,5 @@ type Writer interface {
 }
 
 type Reader interface {
-	ReadAll() []model.Fuel_Consumption
+	ReadAll(chan model.Fuel_Consumption)
 }

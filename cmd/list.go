@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/IgorAndrade/consumo_combustivel/api/store"
+	"github.com/IgorAndrade/consumo_combustivel/internal/model"
 	"github.com/IgorAndrade/consumo_combustivel/internal/service"
 	"github.com/spf13/cobra"
 )
@@ -21,9 +22,10 @@ var listCmd = &cobra.Command{
 		store := store.NewFilestore(f)
 		defer store.Close()
 		serv := service.NewConsumption(store, store)
-		list := serv.ReadAll()
-		for i, v := range list {
-			fmt.Println(i+1, "->", v)
+		cnl := make(chan model.Fuel_Consumption, 5)
+		serv.ReadAll(cnl)
+		for v := range cnl {
+			fmt.Println(v)
 		}
 		fmt.Println("duration", time.Since(start))
 	},

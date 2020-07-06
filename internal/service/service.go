@@ -15,13 +15,21 @@ func NewConsumption(reader repository.Reader, writer repository.Writer) Consumpt
 }
 
 func (c Consumption) Insert(fc model.Fuel_Consumption) error {
-	list := c.reader.ReadAll()
+	cnl := make(chan model.Fuel_Consumption, 5)
+	list := make([]model.Fuel_Consumption, 0)
+	go c.reader.ReadAll(cnl)
+
+	for item := range cnl {
+		list = append(list, item)
+	}
 	fc = calculate(fc, list)
 	return c.writer.Insert(fc)
 }
 
 func (c Consumption) Import() error {
-	for _, r := range c.reader.ReadAll() {
+	cnl := make(chan model.Fuel_Consumption, 5)
+	go c.reader.ReadAll(cnl)
+	for r := range cnl {
 		if err := c.writer.Insert(r); err != nil {
 			return err
 		}
@@ -53,6 +61,6 @@ func totalLiters(list []model.Fuel_Consumption) (total float64) {
 	return
 }
 
-func (c Consumption) ReadAll() []model.Fuel_Consumption {
-	return c.reader.ReadAll()
+func (c Consumption) ReadAll(cnl chan model.Fuel_Consumption) {
+	go c.reader.ReadAll(cnl)
 }
